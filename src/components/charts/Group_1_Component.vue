@@ -38,7 +38,6 @@
         <div class="">
           <div v-for="item in listCharts" :key="item.Group_id" class="mb-5">
             <!----------------- Передаем пропсы ------------------>
-
             <Chart_Line
               v-if="group.id === item.Group_id"
               :label="item.Dash_name"
@@ -48,6 +47,7 @@
       </div>
     </div>
   </div>
+  <!--------------------------------POPUP ADD GROUP--------------------------------->
   <!--------------------------------POPUP ADD GROUP--------------------------------->
   <PopupAdd_Group />
   <!--------------------------------POPUP ADD DUSH---------------------------------->
