@@ -80,6 +80,7 @@
           <button
             @click="addDash"
             type="button"
+            :disabled = "!device_id || !parName"
             class="btn btn-primary"
             data-bs-dismiss="modal"
           >
@@ -110,7 +111,7 @@ export default {
     return {
       group_id: null,
       device_id: null,
-      parName: "",
+      parName: null,
       interval: 10,
     };
   },
@@ -119,7 +120,8 @@ export default {
   },
   methods: {
     getValueOptions(event){
-      console.log(event.target.value)
+      console.log(event.target.value);
+      this.parName = event.target.value;
     },
     getDeviceId(event) {
       this.device_id = event.target.value;
