@@ -48,7 +48,6 @@
           />
         </div>
         <div class="d-flex justify-content-center text-danger">{{ resData }}</div>
-        <!-- BUTTON Sign Up -->
         <div>
           <button class="btn btn-primary btn-block">Зарегестрироваться</button>
         </div>
