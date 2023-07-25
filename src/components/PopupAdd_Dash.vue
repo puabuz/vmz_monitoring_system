@@ -39,11 +39,6 @@
                   <option value="2">Пункт 2</option>
                   <option value="3">Пункт 3</option>
                   <option value="4">Пункт 4</option>
-
-                  <!-- ВАРИАНТ КОДА ДЛЯ РЕНДЕРИНГА -->
-                  <!-- <option v-for="dev in devices" :key="dev.id" :value="dev.id">
-                    {{ dev.u_device_name }}
-                  </option> -->
                 </select>
               </div>
             </div>

@@ -47,15 +47,18 @@
             required
           />
         </div>
+        <div class="d-flex justify-content-center text-danger">{{ resData }}</div>
         <!-- BUTTON Sign Up -->
-        <div><button class="btn btn-primary btn-block">Зарегестрироваться</button></div>
+        <div>
+          <button class="btn btn-primary btn-block">Зарегестрироваться</button>
+        </div>
+        
       </form>
     </div>
   </div>
 </template>
 
 <script>
-
 import axios from "axios";
 
 export default {
@@ -76,28 +79,36 @@ export default {
   },
   methods: {
     async onSubmit() {
-      const response = await axios.post("auth/register", {
-        email: this.form.email,
-        password: this.form.password,
-        is_active: this.form.is_active,
-        is_superuser: this.form.is_superuser,
-        is_verified: this.form.is_verified,
-        username: this.form.username,
-      });
-      console.log(response);
-      this.$router.push("/login")
+      if (this.form.password === this.form.confirm_pass) {
+        await axios
+          .post("auth/register", {
+            email: this.form.email,
+            password: this.form.password,
+            is_active: this.form.is_active,
+            is_superuser: this.form.is_superuser,
+            is_verified: this.form.is_verified,
+            username: this.form.username,
+          })
+          .then(() => {
+            this.$router.push("/login");
+          })
+          .catch(() => {
+            console.log("Ошибка получения устройств");
+          });
+      } else {
+        this.resData = "Пароли в полях не совпадают"
+      }
     },
   },
 };
 </script>
 <style scoped>
-
 h4 {
   text-align: center;
 }
 
 button {
-  margin: 20px ;
+  margin: 20px;
 }
 
 .form_size {

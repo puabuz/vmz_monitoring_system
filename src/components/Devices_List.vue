@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     getValueOptions(event) {
-      console.log(event.target.value);
+      // console.log(event.target.value);
       this.device_id = event.target.value;
     },
   },
