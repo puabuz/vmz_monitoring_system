@@ -17,58 +17,65 @@
         />
       </svg>
     </div>
-    <div v-if="isShowDropdown" class="dropdown-content">
-      <div class="drop_down_btn_title">Профиль</div>
-      <hr />
-      <!--------------------- ADD DEVICES BUTTON -------------------->
-      <div>
-        <a
-          href="#"
-          class="drop_down_btn"
-          data-bs-toggle="modal"
-          data-bs-target="#exampleModal_2"
-          >Добавить устройство</a
-        >
-      </div>
 
-      <!--------------------- ADD ORGANIZATION BUTTON -------------------->
-      <div>
-        <a
-          href="#"
-          class="drop_down_btn"
-          data-bs-toggle="modal"
-          data-bs-target="#exampleModal"
-          >Добавить организацию</a
-        >
-      </div>
+    <!-- PROFILE DROPDOWN MENU -->
+    <transition name="fade">
+      <div v-if="isShowDropdown" class="dropdown-content">
+        <div class="drop_down_btn_title">Профиль</div>
+        <hr />
+        <!--------------------- ADD DEVICES BUTTON ------------------------->
+        <div>
+          <a
+            href="#"
+            class="drop_down_btn"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal_2"
+            >Добавить устройство</a
+          >
+        </div>
+        <!--------------------- ADD ORGANIZATION BUTTON -------------------->
+        <div>
+          <a
+            href="#"
+            class="drop_down_btn"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+            >Добавить организацию</a
+          >
+        </div>
+        <hr />
 
-      <hr />
-      <div @click="logOut">
-        <a href="#" class="drop_down_btn">Выход</a>
+        <div @click="logOut">
+          <a href="#" class="drop_down_btn">Выход</a>
+        </div>
       </div>
-    </div>
+    </transition>
+    <!-------------------------- PROFILE DROPDOWN MENU -->
+
     <div v-if="isShowDropdown" class="back" @click="showDropdown"></div>
   </div>
-  <!-- -----------------------------------POPUP 1 Add Organizations-------------->
+  <!-- -------------------------POPUP 1 Add Organizations-------------->
   <PopupAdd_Organizations />
-  <!-- -----------------------------------POPUP 2 Add Devices-------------------->
-  <PopupAdd_Devices />
+  <!-- ----------------------------POPUP 2 Add Devices----------------->
+  <div class="wrapper_pop">
+    <PopupAdd_Devices />
+  </div>
 </template>
 
 <script>
 import axios from "axios";
-import PopupAdd_Organizations from "./PopupAdd_Organizations.vue";
-
-import PopupAdd_Devices from './PopupAdd_Devices.vue';
+import PopupAdd_Organizations from "./popups/PopupAdd_Organizations.vue";
+import PopupAdd_Devices from "./popups/PopupAdd_Devices.vue";
 
 export default {
   name: "ProfileMenuComponent",
   components: {
     PopupAdd_Organizations,
-    PopupAdd_Devices
+    PopupAdd_Devices,
   },
   data() {
     return {
+      visible: false,
       isShowDropdown: false,
       form: {
         org_name: "",
@@ -109,24 +116,22 @@ export default {
 </script>
 
 <style scoped>
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
 svg {
   position: relative;
   padding: 12px;
   border-radius: 8px;
   display: block;
-  margin: auto;
 }
 
-.bi:hover {
-  background-color: #ddf0f1;
-}
 .drop_down_btn:hover {
   background-color: rgba(200, 240, 240, 0.76);
 }
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
+
 .drop_down_btn_title {
   margin: 15px;
   font-weight: 500;
@@ -137,8 +142,8 @@ svg {
   height: 50px;
   border-radius: 50%;
   cursor: pointer;
-  padding: 8px;
   display: block;
+  padding-top: 6px;
 }
 
 .back {
@@ -154,7 +159,7 @@ svg {
   position: absolute;
   right: -40%;
   width: 250px;
-  z-index: 99;
+  z-index: 1;
   border: 1px solid rgb(198, 198, 198);
   margin-top: 5px;
   margin-left: 20px;
@@ -166,5 +171,15 @@ svg {
   padding: 12px 16px;
   text-decoration: none;
   display: block;
+}
+
+/* ANIMATIONS */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

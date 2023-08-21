@@ -1,7 +1,15 @@
 <template>
   <!------------------------ ORGANIZATION DROPDOWN ---------------------------->
-  <div class="col-12">
-    <select @change="getValueOptions($event)" @click="sendEmit" class="form-select">
+  <div>
+    <div>
+      <h6>Организации</h6>
+    </div>
+
+    <select
+      @change="getValueOptions($event)"
+      @click="sendEmit"
+      class="form-select"
+    >
       <option selected>Все организации</option>
       <option v-for="org in organizations" :key="org.id" :value="org.id">
         {{ org.org_name }}
@@ -18,14 +26,14 @@ export default {
   data() {
     return {
       organizations: {},
-      org_id: null
+      org_id: null,
     };
   },
   methods: {
     //-------- при помощи $emit отправляем id организации в родительский компонент
     sendEmit() {
       this.$emit("getOrganizationsId", {
-        org_id: this.org_id
+        org_id: this.org_id,
       });
     },
     //-------------------------------GET OPTIONS VALUE (ALL ORGANIZATIONS)
@@ -49,4 +57,11 @@ export default {
   },
 };
 </script>
-<style scoped></style>
+<style scoped>
+.form-select {
+  cursor: pointer;
+}
+.form-select:hover {
+  background: rgb(241, 241, 241);
+}
+</style>

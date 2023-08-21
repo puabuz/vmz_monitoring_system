@@ -93,10 +93,10 @@
 
 <script>
 import axios from "axios";
-import Organization_List from "./Organization_List.vue";
+import Organization_List from "../Organization_List.vue";
 
 export default {
-  name: "PopupAdd_DevicesVue",
+  name: "PopupAdd_Devices",
   components: {
     Organization_List,
   },
@@ -141,4 +141,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.wrapper{
+
+}
+</style>

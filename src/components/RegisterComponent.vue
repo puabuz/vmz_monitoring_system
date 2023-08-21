@@ -5,7 +5,7 @@
         <h4>Регистрация</h4>
         <div class="form-group">
           <!-- User Name -->
-          <label for="username">Username</label>
+          <label for="username">Имя пользователя</label>
           <input
             id="username"
             type="text"
@@ -16,7 +16,7 @@
         </div>
         <!-- Email -->
         <div class="form-group">
-          <label for="user_email">Email</label>
+          <label for="user_email">Электронная почта</label>
           <input
             id="user_email"
             type="email"
@@ -27,7 +27,7 @@
         </div>
         <!-- Password -->
         <div class="form-group">
-          <label for="user_pass">Password</label>
+          <label for="user_pass">Пароль</label>
           <input
             id="user_pass"
             type="password"
@@ -38,7 +38,7 @@
         </div>
         <!-- Confirm Password -->
         <div class="form-group">
-          <label for="user_pass_confirm">Confirm Password</label>
+          <label for="user_pass_confirm">Повторить пароль</label>
           <input
             id="user_pass_confirm"
             type="password"
@@ -113,5 +113,6 @@ button {
 .form_size {
   max-width: 500px;
   margin: 0 auto;
+  color: white;
 }
 </style>

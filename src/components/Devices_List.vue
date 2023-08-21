@@ -1,6 +1,9 @@
 <template>
   <!----------------------------DEVICES DROPDOWN-------------------------------->
   <div class="col-12 mb-10px mb-3">
+    <div>
+      <h6>Устройства</h6>
+    </div>
     <select @change="getValueOptions($event)" class="form-select">
       <option selected>Все устройства</option>
       <option v-for="dev in devices" :key="dev.id" :value="dev.id">
@@ -49,4 +52,11 @@ export default {
   },
 };
 </script>
-<style scoped></style>
+<style scoped>
+.form-select {
+  cursor: pointer;
+}
+.form-select:hover {
+  background: rgb(241, 241, 241);
+}
+</style>

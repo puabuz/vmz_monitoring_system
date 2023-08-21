@@ -33,12 +33,16 @@
             <div class="mb-3">
               <label for="params" class="col-form-label">Params:</label>
               <div class="col-12 mb-10px mb-3">
+
+                <!-- <input  type="text" class="form-select" id="params" @change="getValueOptions($event)" required> -->
+
                 <select @change="getValueOptions($event)" id="params" class="form-select" required>
-                  <option selected>Выбранный пункт</option>
-                  <option value="1">Пункт 1</option>
-                  <option value="2">Пункт 2</option>
-                  <option value="3">Пункт 3</option>
-                  <option value="4">Пункт 4</option>
+                  <option selected>Выберите параметр</option>
+                  <option value="Текущая скорость">Текущая скорость</option>
+                  <option value="Температура нагрева">Температура нагрева</option>
+                  <option value="Текущая температура">Текущая температура</option>
+                  <option value="Уровень воды">Уровень воды</option>
+                  <option value="Кол-во воды">Кол-во воды</option>
                 </select>
               </div>
             </div>
@@ -84,12 +88,13 @@
         </div>
       </div>
     </div>
+    
   </div>
   <!-- -----------------------------------POPUP------------------------------ -->
 </template>
 
 <script>
-import Devices_List from "./Devices_List.vue";
+import Devices_List from "../Devices_List.vue";
 import axios from "axios";
 
 export default {
@@ -114,6 +119,9 @@ export default {
     this.group_id = this.groupId;
   },
   methods: {
+    test(){
+      console.log(this.groupId)
+    },
     getValueOptions(event){
       console.log(event.target.value);
       this.parName = event.target.value;
@@ -147,4 +155,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.form-select:hover{
+  background: rgb(241, 241, 241);
+}
+</style>

@@ -1,9 +1,6 @@
 <template>
-  <div class="container">
     <h4 v-if="!getUser">Войдите в систему</h4>
-    <h4 v-if="getUser">Пользователь: {{ getUser }}<hr/></h4>
     <UserComponent v-if="getUser"/>
-  </div>
 </template>
 
 <script>

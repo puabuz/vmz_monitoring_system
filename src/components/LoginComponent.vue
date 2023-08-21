@@ -27,7 +27,7 @@
         </div>
         <div class="res_block group">{{ errorMessage }}</div>
         <!-- BUTTON Login -->
-        <button class="btn btn-primary btn-block">Войти</button>
+        <button class="btn btn-primary btn-block ">Войти</button>
       </form>
     </div>
   </div>
@@ -38,7 +38,6 @@ import axios from "axios";
 
 export default {
   name: "LoginComponent",
-  
   data() {
     return {
       errorMessage: "",
@@ -55,22 +54,22 @@ export default {
         password: this.form.password,
       };
       // ---------------------------------GET A TOKEN IN COOKIE FILES
-      axios.defaults.withCredentials = true;
+      
       await axios
         .post("auth/jwt/login", userData, {
           headers: {
-            "content-type": "application/x-www-form-urlencoded",
-            withCredentials: true,
+            "Content-Type": "application/x-www-form-urlencoded",
+            // "Access-Control-Allow-Credentials": true,
+            // "Access-Control-Allow-Origin": "*",
           },
+          withCredentials: true,
         })
-        .then(() => {
-          console.log("Token");
-        })
+
+        .then(() => {})
         .catch((err) => {
           console.log(err.response.data.detail);
           this.errorMessage = err.response.data.detail;
-        });
-
+        })
       // ----------------------------------------GET USER DATA
       await axios
         .get("user/me")
@@ -91,6 +90,7 @@ export default {
 <style scope>
 h3 {
   text-align: center;
+  color: white;
 }
 label {
   margin: 20px 0;
@@ -104,6 +104,7 @@ button {
 }
 .form-group {
   margin: 20px;
+  color: white;
 }
 .res_block {
   /* border: 1px solid black; */
