@@ -9,20 +9,24 @@
     </button>
   </div>
   <div class="container">
-    <button @click="sel = null" :class="sel === null ? 'active' : 'btn_tab'">Все группы</button>
-    <button
-      @click="sel = tag.id"
-      v-for="tag in listGroups"
-      :key="tag.id"
-      :class="sel === tag.id ? 'active': 'btn_tab' "
-    >
-      {{ tag.name }}
+    <button @click="sel = null" :class="sel === null ? 'active' : 'btn_tab'">
+      Все группы
     </button>
+
+    <!-- --------------template v-for-->
+    <button
+      @click="sel = group.id"
+      v-for="group in listGroups"
+      :key="group.id"
+      :class="sel === group.id ? 'active' : 'btn_tab'"
+    >
+      {{ group.name }}
+    </button>
+    <!-- --------------template v-for-->
   </div>
+  <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%  Цикл 1  %%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
   <div v-for="group in listGroups" :key="group.id">
     <div v-if="group.id === sel || sel === null" class="charts_wrapper mb-3">
-      <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%  Цикл 1  %%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
-
       <!------------------------------ TITLE GROUP ----------------------------------->
       <div class="d-flex justify-content-between align-middle">
         <div class="d-flex align-items-center col-12 col-sm-6">
@@ -30,7 +34,10 @@
         </div>
       </div>
       <h6 v-if="group.description">{{ group.description }}</h6>
-
+      <!------------------------------ TITLE GROUP ----------------------------------->
+      <div class="alert alert-warning p-1" role="alert" v-if="listDashboards == 0">
+        Графиков для этого устройства нет
+      </div>
       <button
         @click="this.groupId = group.id"
         type="button"
@@ -42,7 +49,6 @@
       </button>
       <hr />
       <!----------------------------- CHARTS RENDER ---------------------------------->
-
       <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%  Цикл 2  %%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
       <div class="container d-flex flex-wrap">
         <template v-for="item in listDashboards" :key="item.Dash_id">
@@ -86,11 +92,11 @@
 </template>
 
 <script>
-import axios from "axios";
 import PopupUpdate_Dash from "../popups/PopupUpdate_Dash.vue";
 import PopupAdd_Group from "../popups/PopupAdd_Group.vue";
 import PopupAdd_Dash from "../popups/PopupAdd_Dash.vue";
 import Chart_Line from "./Chart_Line.vue";
+import { getDashboardsList, getGroupsList } from "../../api";
 
 export default {
   name: "ChartAll",
@@ -99,6 +105,14 @@ export default {
     PopupAdd_Dash,
     PopupUpdate_Dash,
     Chart_Line,
+  },
+  props: {
+    owner_id: {
+      type: Number,
+    },
+    device_id: {
+      type: Number,
+    },
   },
   data() {
     return {
@@ -110,29 +124,48 @@ export default {
     };
   },
 
+  watch: {
+    async owner_id(ownerId) {
+      //получаем список групп
+      const response = await getGroupsList();
+      this.listGroups = response.data;
+      if (ownerId !== 0) {
+        const result = this.listGroups.filter(
+          (group) => group.owner === ownerId
+        );
+        this.listGroups = result;
+      }
+    },
+    async device_id(deviceId) {
+      //получаем список графиков
+      const response = await getDashboardsList();
+      this.listDashboards = response.data;
+      if (deviceId !== 0) {
+        const result = this.listDashboards.filter(
+          (dash) => dash.Dash_device_id === deviceId
+        );
+        this.listDashboards = result;
+      }
+    },
+  },
   async created() {
-    //-------------------Получаем данные для графиков
-    axios.defaults.withCredentials = true;
-
     //----------------------Получаем список групп
-    await axios
-      .get("dashboards/list_groups")
-      .then((res) => {
-        this.listGroups = res.data;
-      })
-      .catch((err) => {
-        console.log(`Ошибка получения данных: ${err.response.data.detail}`);
-      });
+    try {
+      const resGroupsList = await getGroupsList();
+    this.listGroups = resGroupsList.data;
+    } catch (err) {
+      alert("Ошибка получения списка групп")
+    }
 
-    // ---------------Получаем данные графиков (Группа 1)
-    await axios
-      .get("/dashboards/list")
-      .then((res) => {
-        this.listDashboards = res.data;
-      })
-      .catch((err) => {
-        console.log(`Ошибка получения данных: ${err.response.data.detail}`);
-      });
+
+    // --------------------Получаем список графиков
+    try {
+      const resDashboardsList = await getDashboardsList();
+    this.listDashboards = resDashboardsList.data;  
+    } catch (err) {
+      alert("Ошибка получения списка групп")
+    }
+    
   },
 };
 </script>
@@ -141,12 +174,12 @@ export default {
 .active {
   padding: 5px 5px;
   margin: 0 5px;
-  color:#ffffff;
+  color: #ffffff;
   background-color: rgba(195, 252, 197, 0.712);
   border-radius: 6px 6px 0 0;
   border: none;
 }
-.btn_tab{
+.btn_tab {
   padding: 5px 5px;
   margin: 0 5px;
   background-color: rgba(144, 172, 155, 0);

@@ -16,10 +16,9 @@
       <!-- --------------------DEVICE------------ -->
       <div class="col-12 col-sm- ava_box">
         {{ device.u_device_name }}
-        {{ device.id }}
         <hr />
         <!-- --------------------BOX_1------------ -->
-        <DeviceComponentMetricsBox />
+        <DeviceComponentMetricsBox :device_id="device.id"/>
       </div>
     </div>
   </div>
@@ -48,14 +47,6 @@ export default {
     // ----------------------------GET ALL DEVICES-------------------------
     const res = await axios.get("devices/all");
     this.devices = res.data;
-
-    try {
-      const res = await axios.get(`/queries/last_over_time/2`);
-      this.metrics = res.data.metrics;
-      console.log(this.metrics);
-    } catch (error) {
-      console.log("ОШИБКА " + error);
-    }
   },
 };
 </script>

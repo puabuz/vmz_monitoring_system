@@ -57,7 +57,9 @@
       </div>
     </div>
   </div>
-  <div v-if="errorMessage">{{ errorMessage }}</div>
+  <div v-if="errorMessage" class="text-danger text-end px-1"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill mx-1" viewBox="0 0 20 20">
+  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+</svg>{{ errorMessage }}</div>
   <!-- ***Chart-Component*** -->
   <highcharts :constructor-type="'stockChart'" :options="chartOptions" />
   <!-- ***Chart-Component*** -->
@@ -260,6 +262,17 @@ export default {
       Date.now() - 1000 * 60 * this.setInterval.interval; // получаем начало интервала в UNIX
     this.setInterval.timeEnd = Date.now(); // получаем конец интервала в UNIX
 
+    // ---------------------
+    // ЗДЕСЬ НУЖНО ПОПРОБОВАТЬ TRY / CATCH
+    // const response = await axios
+    //   .post(`dashboards/dash/${this.Dash_Id}`, {
+    //     start_dt: this.setInterval.timeStart,
+    //     end_dt: this.setInterval.timeEnd,
+    //   })
+    //   console.log(response)
+      
+    // ---------------------
+
     await axios
       .post(`dashboards/dash/${this.Dash_Id}`, {
         start_dt: this.setInterval.timeStart,
@@ -274,12 +287,10 @@ export default {
         );
       })
       .catch((err) => {
+        this.errorMessage = err.response.data.detail 
         console.log(err.response.data.detail);
       });
   },
-
-  //-------------0000000000000000------------------
-
   created() {
     setInterval(async () => {
       this.setInterval.timeStart =

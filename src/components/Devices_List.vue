@@ -4,8 +4,8 @@
     <div>
       <h6>Устройства</h6>
     </div>
-    <select @change="getValueOptions($event)" class="form-select">
-      <option selected>Все устройства</option>
+    <select @change="sendEmit($event)" class="form-select">
+      <option selected value=0>Все устройства</option>
       <option v-for="dev in devices" :key="dev.id" :value="dev.id">
         {{ dev.u_device_name }}
       </option>
@@ -25,19 +25,17 @@ export default {
     };
   },
   methods: {
-    getValueOptions(event) {
-      // console.log(event.target.value);
-      this.device_id = event.target.value;
+    //-------- при помощи event получаем ID устройства из select
+    //-------- при помощи $emit отправляем id организации в родительский компонент
+    sendEmit(event) {
+      this.device_id = +event.target.value;
+      this.$emit("getDeviceId", +event.target.value);
     },
+    retNull(){
+      return null
+    }
   },
-
-  //-------- при помощи $emit отправляем id устройства в родительский компонент
-  sendEmit() {
-    this.$emit("getDeviceId", {
-      device_id: this.device_id,
-    });
-  },
-
+  
   async mounted() {
     // ----------------------------GET ALL DEVICES-------------------------
     axios.defaults.withCredentials = true;
