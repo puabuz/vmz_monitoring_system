@@ -132,12 +132,9 @@ export default {
     //------------------------------ДОБАВЛЕНИЕ НОВОГО ГРАФИКА
     async addDash() {
       this.group_id = this.groupId; // присваиваем значение из props
-      // console.log("ID группы: " + this.group_id);
-      // console.log("ID устройства: " + this.device_id);
-      // console.log("Интервал: " + this.interval);
       axios.defaults.withCredentials = true;
       await axios
-        .post("dashboards/add/dash", {
+        .post("dashboard/graphs/add", {
           group_id: this.group_id,
           device_id: this.device_id,
           Par_name: this.parName,

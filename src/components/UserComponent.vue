@@ -1,35 +1,12 @@
 <template>
   <div class="container mb-2 mt-3">
-    <div class="title">Дашборды</div>
+    <div class="title">Главная</div>
   </div>
   <hr />
   <div class="container-fluid mt-5">
     <div class="row d-flex justify-content-between">
-      <!----------------------------- HISTORY LIST BOX -------------------------------->
-      <div
-        class="card news_box col-sm-12 col-md-5 col-lg-5 col-xl-5 col-xxl-5 mb-5"
-      >
-        <div class="card-body pb-0 d-flex flex-column">
-          <h5 class="card-title">Новости</h5>
-          <ul>
-            <li>Отжим</li>
-          </ul>
-          <div
-            class="mt-auto d-flex flex-row-reverse"
-            data-toggle="modal"
-            data-target=".bd-example-modal-lg"
-          >
-            <button
-              type="button"
-              class="drop_down_btn btn btn-outline-secondary"
-              data-bs-toggle="modal"
-              data-bs-target="#historyBox"
-            >
-              Показать все новости
-            </button>
-          </div>
-        </div>
-      </div>
+      <!----------------------------- NEWS BOX -------------------------------->
+      <NewsComponent />
 
       <!----------------------------- ERROR LIST BOX ---------------------------------->
       <div
@@ -50,7 +27,7 @@
               data-bs-toggle="modal"
               data-bs-target="#errorBox"
             >
-              Показать ошибки
+              Показать все ошибки
             </button>
           </div>
         </div>
@@ -78,21 +55,17 @@
   <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%FILTER%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
 
   <!--------------------------------- CHARTS --------------------------------->
-  <div class="chart_wrapper"><ChartsAll :owner_id="owner_id" :device_id="device_id"/></div>
-
-  <!------------------------------ POPUP HISTORY ------------------------------>
-  <PopupHistory />
+  <ChartsAll :owner_id="owner_id" :device_id="device_id" />
 
   <!----------------------------- POPUP ERRORS ------------------------------>
   <PopupErrors />
 </template>
 
 <script>
-// import axios from "axios";
 import Organization_List from "./Organization_List.vue";
 import Device_List from "./Devices_List.vue";
 import ChartsAll from "./charts/ChartsAll.vue";
-import PopupHistory from "./popups/PopupHistory.vue";
+import NewsComponent from "./NewsComponent.vue";
 import PopupErrors from "./popups/PopupErrors.vue";
 
 export default {
@@ -101,7 +74,7 @@ export default {
     Organization_List,
     Device_List,
     ChartsAll,
-    PopupHistory,
+    NewsComponent,
     PopupErrors,
   },
   data() {
@@ -120,13 +93,6 @@ export default {
       this.device_id = devicesId;
     },
   },
-//  async mounted(){
-//     const response = await axios.get("/user/news");
-//     console.log(response);
-//   }
-   mounted(){
-    console.log("mounted");
-  }
 };
 </script>
 
@@ -168,26 +134,7 @@ p {
     rgba(252, 214, 110, 0.856)
   );
 }
-.news_box {
-  border: none;
-  padding: 15px;
-  border-radius: 15px;
-  overflow: hidden;
-  /* ------------BG-HISTORY------------ */
-  background: linear-gradient(
-    to right,
-    rgba(197, 197, 248, 0.658),
-    rgba(142, 142, 243, 0.699)
-  );
-}
 
-.news_box:hover {
-  background: linear-gradient(
-    to right,
-    rgba(212, 212, 247, 0.849),
-    rgba(146, 146, 238, 0.829)
-  );
-}
 .filter_wrapper {
   /* ------------BG-FILTER------------ */
   background: linear-gradient(

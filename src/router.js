@@ -6,6 +6,7 @@ import DevicesComponent from "./components/DevicesComponent.vue"
 import OrganizationsComponent from "./components/OrganizationsComponent.vue";
 import ServicesComponent from "./components/ServicesComponent.vue"
 import ContactsComponent from "./components/ContactsComponent.vue"
+import ArchiveComponent from "./components/ArchiveComponent.vue"
 
 const routerHistory = createWebHashHistory();
 const router = createRouter({
@@ -45,6 +46,11 @@ const router = createRouter({
       path: "/contacts",
       name: "contacts",
       component: ContactsComponent,
+    },
+    {
+      path: "/archive",
+      name: "archive",
+      component: ArchiveComponent,
     },
 
   ],

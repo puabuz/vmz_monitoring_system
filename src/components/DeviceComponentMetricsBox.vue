@@ -107,7 +107,6 @@ export default {
     // console.log(this.device_id);
     try {
       const res = await axios.get(`/queries/last_over_time/${this.device_id}`);
-      // console.log(res.data.metrics)
       this.metrics = res.data.metrics;
       console.log(this.metrics);
 

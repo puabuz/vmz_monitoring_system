@@ -142,7 +142,4 @@ export default {
 </script>
 
 <style scoped>
-.wrapper{
-
-}
 </style>

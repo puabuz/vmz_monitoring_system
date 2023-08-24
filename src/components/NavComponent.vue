@@ -1,10 +1,7 @@
 <template>
-  <!-- ------------------------------------------------------------------------------ -->
-
   <nav class="header navbar navbar-expand-lg" data-bs-theme="dark">
     <div class="container">
       <a class="navbar-brand" href="#">VMZ</a>
-
       <div>
         <div class="btn-group">
           <button
@@ -41,7 +38,7 @@
           <div class="">
             <div class="navbar-nav">
               <li class="">
-                <router-link to="/" class="nav-link">Дашборды</router-link>
+                <router-link to="/" class="nav-link">Дашборд</router-link>
               </li>
               <li class="">
                 <router-link to="/devices" class="nav-link"

@@ -26,7 +26,7 @@ export const conversionData = (times, values) => {
 // @return [{number}, {number}]
 export const getMetricsForDash = async (dash_Id, timeStart, timeEnd) => {
   try {
-    const response = await axios.post(`dashboards/dash/${dash_Id}`, {
+    const response = await axios.post(`dashboard/graphs/${dash_Id}`, {
       start_dt: timeStart,
       end_dt: timeEnd,
     });
@@ -40,16 +40,39 @@ export const getMetricsForDash = async (dash_Id, timeStart, timeEnd) => {
 //Получаем все графики. 
 //return [{},{}, ... {}]
 export const getDashboardsList = async () => {
-    const response = await axios.get("/dashboards/list")
+    const response = await axios.get("/dashboard/get")
     return response
 }
 
 //-->ChartsAll component
-//Получаем все группы.
-//return [{},{}, ... {}]
+// Получаем все группы.
+// return [{},{}, ... {}]
 export const getGroupsList = async () => {
-  const response = await axios.get("dashboards/list_groups");
+  const response = await axios.get("dashboard/groups/list");
   return response;
+}
+
+//--> PopapAllNews component
+// Получаеми все новости
+// return [{},{}...{}]
+export const getAllNews = async () => {
+    const response = await axios.get("/user/news/unreaded");
+    return response.data;
+}
+
+//--> PopapAllNews component
+// Отправляем в архив прочитанную новость
+// param newsId
+export const userNewsRead = async (newsId) => {
+  await axios.post(`/user/news/read/${newsId}`);
+}
+
+//--> ArchiveComponent 
+// Получаем архив новостей
+
+export const getArchiveNews = async () => {
+  const response = await axios.get(`/user/news/archive`);
+  return response.data;
 }
 
 

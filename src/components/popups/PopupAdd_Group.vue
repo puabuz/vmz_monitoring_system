@@ -90,7 +90,7 @@ export default {
     async addDashGroup() {
       axios.defaults.withCredentials = true;
       await axios
-        .post("dashboards/add/dash_group", {
+        .post("dashboard/groups/add", {
           name: this.form.name_group,
           description: this.form.descr_group,
         })

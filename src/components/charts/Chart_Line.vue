@@ -274,7 +274,7 @@ export default {
     // ---------------------
 
     await axios
-      .post(`dashboards/dash/${this.Dash_Id}`, {
+      .post(`dashboard/graphs/${this.Dash_Id}`, {
         start_dt: this.setInterval.timeStart,
         end_dt: this.setInterval.timeEnd,
       })

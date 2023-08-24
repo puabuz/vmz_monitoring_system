@@ -168,7 +168,7 @@ export default {
     async updateDash() {
       
       await axios
-      .put(`/dashboards/dash/${this.dashId}`, {
+      .put(`/dashboard/graphs/${this.dashId}`, {
 
           group_id: this.group_id,
           Par_name: this.parName,
