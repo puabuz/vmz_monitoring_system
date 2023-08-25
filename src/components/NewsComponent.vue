@@ -12,7 +12,7 @@
           <li>{{ news.text }}</li>
           </template>
         </ul>
-      div
+     
       <!-- -----------ВЫВОД------------- -->
       <div
         class="mt-auto d-flex flex-row-reverse"
