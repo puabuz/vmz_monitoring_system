@@ -59,7 +59,7 @@ export default {
         .post("auth/jwt/login", userData, {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
-            "Access-Control-Allow-Credentials": true,
+            // "Access-Control-Allow-Credentials": true,
             "Access-Control-Allow-Origin": "*",
           },
           withCredentials: true,
