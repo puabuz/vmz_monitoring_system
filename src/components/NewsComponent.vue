@@ -5,22 +5,28 @@
   >
     <div class="card-body pb-0 d-flex flex-column">
       <h5 class="card-title">Новости</h5>
-      <ul>
-        <li>Отжим</li>
-      </ul>
+      <!-- -----------ВЫВОД------------- -->
+      
+        <ul>
+          <template v-for="news in newsList" :key="news.id">
+          <li>{{ news.text }}</li>
+          </template>
+        </ul>
+      div
+      <!-- -----------ВЫВОД------------- -->
       <div
         class="mt-auto d-flex flex-row-reverse"
         data-toggle="modal"
         data-target=".bd-example-modal-lg"
       >
         <button
-              type="button"
-              class="drop_down_btn btn btn-outline-secondary"
-              data-bs-toggle="modal"
-              data-bs-target="#historyBox"
-            >
-              Показать все новости
-            </button>
+          type="button"
+          class="drop_down_btn btn btn-outline-secondary"
+          data-bs-toggle="modal"
+          data-bs-target="#historyBox"
+        >
+          Показать все новости
+        </button>
       </div>
     </div>
   </div>
@@ -31,6 +37,7 @@
 
 <script>
 import PopupAllNews from "./popups/PopupAllNews.vue";
+import { getAllNews } from "../api";
 
 export default {
   name: "UserComponent",
@@ -38,7 +45,18 @@ export default {
     PopupAllNews,
   },
   data() {
-    return {};
+    return {
+      newsList: null,
+      errorMessage: null,
+    };
+  },
+  async mounted() {
+    try {
+      const response = await getAllNews();
+      this.newsList = response;
+    } catch (error) {
+      this.errorMessage = "Ошибка";
+    }
   },
 };
 </script>

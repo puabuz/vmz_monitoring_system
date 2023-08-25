@@ -1,0 +1,15 @@
+stages:
+  - deploy
+server deploying:
+  stage: deploy
+  script:
+    - echo "Deploying front"
+    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+    - docker build -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA} .
+    - docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}
+    - ssh user@192.168.105.35 "docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}"
+    - ssh user@192.168.105.35 "docker pull ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}"
+    - ssh user@192.168.105.35 "docker rm --force cloud.front || true"
+    - ssh user@192.168.105.35 "docker run --name cloud.front -d --restart always -p 3000:8080 ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}"
+  tags:
+    - shell
