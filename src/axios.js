@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const ENV = process.env.NODE_ENV === "production" ? "https://cloud2" : "http://192.168.105.167:5000/"
+const ENV = process.env.NODE_ENV === "production" ? "https://cloud" : "http://192.168.105.167:5000/"
 
 //каждый URL адрес, который мы запрашиваем, будет добавлять этот префикс
 // обязательно проимпортировать в main.js
