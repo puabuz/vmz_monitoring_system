@@ -56,6 +56,7 @@ export default {
       // ---------------------------------GET A TOKEN IN COOKIE FILES
       
       await axios
+      
         .post("auth/jwt/login", userData, {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",

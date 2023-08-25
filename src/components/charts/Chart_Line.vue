@@ -125,6 +125,7 @@ export default {
   },
   data() {
     return {
+      inter: null,
       dashName: null,
       device: null,
 
@@ -292,7 +293,7 @@ export default {
       });
   },
   created() {
-    setInterval(async () => {
+    this.inter = setInterval(async () => {
       this.setInterval.timeStart =
         Date.now() - 1000 * 60 * this.setInterval.interval; // получаем начало интервала в UNIX
       this.setInterval.timeEnd = Date.now(); // получаем конец интервала в UNIX
@@ -303,6 +304,9 @@ export default {
       );
     }, 15000);
   },
+  beforeUnmount() {
+     clearInterval(this.inter);
+   }
 };
 </script>
 
