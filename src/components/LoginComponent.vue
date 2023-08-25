@@ -56,16 +56,14 @@ export default {
       // ---------------------------------GET A TOKEN IN COOKIE FILES
       
       await axios
-      
         .post("auth/jwt/login", userData, {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
-            // "Access-Control-Allow-Credentials": true,
+            "Access-Control-Allow-Credentials": true,
             "Access-Control-Allow-Origin": "*",
           },
           withCredentials: true,
         })
-
         .then(() => {})
         .catch((err) => {
           console.log(err.response.data.detail);
