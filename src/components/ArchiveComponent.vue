@@ -7,14 +7,14 @@
   <!-- Error message -->
   <template v-if="!errorMessage">
     <div v-for="item in archiveList" :key="item.id" class="news_item p-3 mb-2">
-      <span class="date">24.08.2023</span>
+      <span class="date">{{ new Date(item.added_at).toLocaleDateString("ru-US", { day: 'numeric', month: 'numeric', year: 'numeric' }) }}</span>
       <div>{{ item.text }}</div>
       <div class="d-flex justify-content-end">
         <button
           @click="sendToArchive(item.id)"
           class="button_ok btn btn-outline-success btn-sm m-1"
         >
-          Пуск ракеты
+          Кнопка
         </button>
       </div>
     </div>

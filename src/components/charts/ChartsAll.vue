@@ -29,7 +29,7 @@
     <div v-if="group.id === sel || sel === null" class="charts_wrapper mb-3">
       <!------------------------------ TITLE GROUP ----------------------------------->
       <div class="d-flex justify-content-between align-middle">
-        <div class="d-flex align-items-center col-12 col-sm-6">
+        <div class="d-flex align-dashs-center col-12 col-sm-6">
           <h2>{{ group.name }}</h2>
         </div>
       </div>
@@ -51,27 +51,27 @@
       <!----------------------------- CHARTS RENDER ---------------------------------->
       <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%  Цикл 2  %%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
       <div class="container d-flex flex-wrap">
-        <template v-for="item in listDashboards" :key="item.Dash_id">
+        <template v-for="dash in listDashboards" :key="dash.Dash_id">
           <div
-            v-if="group.id === item.Group_id"
+            v-if="group.id === dash.Group_id"
             class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6 p-1"
           >
             <div class="chart_menu d-flex justify-content-end">
               <span
                 @click="
-                  (this.dashId = item.Dash_id), (this.groupId = item.Group_id)
+                  (this.dashId = dash.Dash_id), (this.groupId = dash.Group_id)
                 "
-                class="chart_menu_item mx-2"
+                class="chart_menu_dash mx-2"
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal_updateDash"
                 >Редактировать</span
               >
-              <span class="chart_menu_item mx-2">Удалить</span>
+              <span @click="deleteGraph(dash.Dash_id)" class="chart_menu_dash mx-2">Удалить</span>
             </div>
             <div class="chart__wrapper">
               <!----------- Передаем пропсы(название и ID группы) ------------>
               <!----------------- Передаем данные в графики ------------------>
-              <Chart_Line :label="item.Dash_name" :Dash_Id="item.Dash_id" />
+              <Chart_Line :label="dash.Dash_name" :Dash_Id="dash.Dash_id" />
             </div>
           </div>
         </template>
@@ -96,7 +96,7 @@ import PopupUpdate_Dash from "../popups/PopupUpdate_Dash.vue";
 import PopupAdd_Group from "../popups/PopupAdd_Group.vue";
 import PopupAdd_Dash from "../popups/PopupAdd_Dash.vue";
 import Chart_Line from "./Chart_Line.vue";
-import { getDashboardsList, getGroupsList } from "../../api";
+import { getDashboardsList, getGroupsList, delGraph } from "../../api";
 
 export default {
   name: "ChartAll",
@@ -123,7 +123,12 @@ export default {
       sel: null,
     };
   },
-
+  methods:{
+    deleteGraph(dash){
+      delGraph(dash)
+      this.$router.go(0)
+    }
+  },
   watch: {
     async owner_id(ownerId) {
       //получаем список групп
@@ -186,7 +191,7 @@ export default {
   border-radius: 6px 6px 0 0;
   border: none;
 }
-.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-dash.show .nav-link,
 .nav-tabs .nav-link.active {
   background-color: rgba(162, 226, 187, 0.808);
   border: none;
@@ -226,11 +231,11 @@ export default {
   /* box-shadow: 3px 4px 5px rgb(165, 165, 167); */
 }
 
-.chart_menu_item {
+.chart_menu_dash {
   cursor: pointer;
   color: rgb(22, 114, 131);
 }
-.chart_menu_item:hover {
+.chart_menu_dash:hover {
   color: rgb(0, 97, 114);
 }
 </style>

@@ -52,6 +52,13 @@ export const getGroupsList = async () => {
   return response;
 }
 
+//-->ChartsAll component
+// Удаляем график
+// param graph ID
+export const delGraph = async (graphId) => {
+  await axios.delete(`/dashboard/graphs/del/${graphId}`)
+}
+
 //--> PopapAllNews component
 // Получаеми все новости
 // return [{},{}...{}]

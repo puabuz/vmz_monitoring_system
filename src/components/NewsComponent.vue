@@ -5,15 +5,13 @@
   >
     <div class="card-body pb-0 d-flex flex-column">
       <h5 class="card-title">Новости</h5>
-      <!-- -----------ВЫВОД------------- -->
-      
         <ul>
+          <li v-if="!newsList">Новых новостей нет</li>
           <template v-for="news in newsList" :key="news.id">
-          <li>{{ news.text }}</li>
+            <li class="news_string"><span class="date_str"> {{ new Date(news.added_at).toLocaleDateString("ru-US", { day: 'numeric', month: 'numeric'}) }}</span>{{ news.text }}</li>
           </template>
+          <span class="dots mx-3">. . .</span>
         </ul>
-     
-      <!-- -----------ВЫВОД------------- -->
       <div
         class="mt-auto d-flex flex-row-reverse"
         data-toggle="modal"
@@ -53,7 +51,7 @@ export default {
   async mounted() {
     try {
       const response = await getAllNews();
-      this.newsList = response;
+      this.newsList = response.slice(0, 3);
     } catch (error) {
       this.errorMessage = "Ошибка";
     }
@@ -86,4 +84,23 @@ export default {
 .drop_down_btn:hover {
   box-shadow: 3px 4px 8px rgb(122, 122, 122);
 }
+
+.news_string{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.date_str{
+  margin-right: 5px;
+  border-bottom: 1px solid #000;
+}
+
+ul{
+  padding: 0;
+}
+.dots {
+  font-weight: bold;
+  margin-left: 13px;
+}
+
 </style>
