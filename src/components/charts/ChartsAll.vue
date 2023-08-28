@@ -12,9 +12,9 @@
     Групп для этой огранизации нет
   </div>
 
-  <div  class="container">
+  <div class="container">
     <button
-    v-if="listGroups.length"
+      v-if="listGroups.length"
       @click="sel = null"
       :class="sel === null ? 'active' : 'btn_tab'"
     >
@@ -152,17 +152,17 @@ export default {
   },
   watch: {
     async org_id(org_id) {
-      //получаем список групп
-      const response = await getGroupsList();
-      this.listGroups = response.data;
-
+      //получаем список графиков
+      const response = await getDashboardsList();
+      this.listDashboards = response.data;
       if (org_id !== 0) {
-        const result = this.listGroups.filter(
-          (group) => group.owner === org_id
+        const result = this.listDashboards.filter(
+          (dash) => dash.Organisation_id === org_id
         );
-        this.listGroups = result;
+        this.listDashboards = result;
       }
     },
+
     async device_id(deviceId) {
       //получаем список графиков
       const response = await getDashboardsList();

@@ -165,7 +165,7 @@ export default {
         {
           key: 180,
           label: "3 часа",
-          checked: true,
+          checked: true
         },
         {
           key: 360,
@@ -238,6 +238,8 @@ export default {
       this.setInterval.timeEnd = new Date(event.target.value).toISOString();
 
       // ---Отправляем данные с диапазоном времени на сервер и задаем их в график.
+      // console.log(this.setInterval.timeStart)
+      // console.log(this.setInterval.timeEnd)
 
       this.chartOptions.series[0].data = await getMetricsForDash(
         this.Dash_Id,
@@ -252,7 +254,6 @@ export default {
       this.setInterval.interval = interval;
       this.setInterval.timeStart = Date.now() - 1000 * 60 * interval; // получаем начало интервала в UNIX
       this.setInterval.timeEnd = Date.now(); // получаем конец интервала в UNIX
-
       this.chartOptions.series[0].data = await getMetricsForDash(
         this.Dash_Id,
         this.setInterval.timeStart,
