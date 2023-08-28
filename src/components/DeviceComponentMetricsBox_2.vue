@@ -19,7 +19,7 @@
 import axios from "axios";
 
 export default {
-  name: "DeviceComponentMetricsBox",
+  name: "DeviceComponentMetricsBox_2",
   components: {},
   props: {
     device_id: {
@@ -34,12 +34,13 @@ export default {
       movement: null,
     };
   },
-  methods: {
-    test(event) {
-      console.log(event.target.value);
-    },
+  methods:{
+    test(event){
+      console.log(event.target.value)
+    }
   },
   async mounted() {
+    // ----------------------------GET ALL DEVICES-------------------------
     // console.log(this.device_id);
     try {
       const res = await axios.get(`/queries/last_over_time/${this.device_id}`);
@@ -50,7 +51,7 @@ export default {
         this.noData = true;
       }
     } catch (error) {
-      console.log(error);
+      // alert("ОШИБКА " + error);
     }
   },
 };
@@ -72,7 +73,7 @@ button {
     rgba(142, 142, 243, 0.699)
   );
 }
-.form-check-label {
+.form-check-label{
   margin: 0;
 }
 .ava_box:hover {
@@ -105,7 +106,7 @@ button {
 .modal-header {
   color: black;
 }
-.marker {
+.marker{
   font-size: 14px;
 }
 </style>

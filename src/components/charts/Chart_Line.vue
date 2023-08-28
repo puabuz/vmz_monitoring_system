@@ -122,6 +122,9 @@ export default {
     Dash_Id: {
       type: Number,
     },
+    Device_name: {
+      type: String
+    }
   },
   data() {
     return {
@@ -259,20 +262,14 @@ export default {
   },
 
   async mounted() {
+ 
+    this.device = this.Device_name
+    this.dashName = this.label
+
     this.setInterval.timeStart =
       Date.now() - 1000 * 60 * this.setInterval.interval; // получаем начало интервала в UNIX
     this.setInterval.timeEnd = Date.now(); // получаем конец интервала в UNIX
 
-    // ---------------------
-    // ЗДЕСЬ НУЖНО ПОПРОБОВАТЬ TRY / CATCH
-    // const response = await axios
-    //   .post(`dashboards/dash/${this.Dash_Id}`, {
-    //     start_dt: this.setInterval.timeStart,
-    //     end_dt: this.setInterval.timeEnd,
-    //   })
-    //   console.log(response)
-      
-    // ---------------------
 
     await axios
       .post(`dashboard/graphs/${this.Dash_Id}`, {
@@ -280,8 +277,6 @@ export default {
         end_dt: this.setInterval.timeEnd,
       })
       .then((res) => {
-        this.device = res.data.metric.__name__;
-        this.dashName = res.data.metric.register;
         this.chartOptions.series[0].data = conversionData(
           res.data.timestamps,
           res.data.values

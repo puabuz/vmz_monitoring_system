@@ -10,7 +10,7 @@
       class="form-select"
     >
       <option selected value=0>Все организации</option>
-      <option v-for="org in organizations" :key="org.id" :value="org.owner">
+      <option v-for="org in organizations" :key="org.id" :value="org.id">
         {{ org.org_name }}
       </option>
     </select>
@@ -33,7 +33,7 @@ export default {
     //-------- при помощи $emit отправляем id организации в родительский компонент
     sendEmit(event) {
       this.owner = +event.target.value;
-      this.$emit("getOwnerId", +event.target.value);
+      this.$emit("getOrgId", +event.target.value);
     },
   },
   async mounted() {
@@ -44,7 +44,6 @@ export default {
       .get("/organisations/my_list")
       .then((res) => {
         this.organizations = res.data;
-        // console.log("ORGANIZATIONS", res.data)
       })
       .catch(() => {
         console.log("Ошибка получения организаций");

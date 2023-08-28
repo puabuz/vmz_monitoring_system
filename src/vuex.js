@@ -3,7 +3,8 @@ import {createStore} from 'vuex';
 
 const state = {
   user: null,
-  userId: null
+  userId: null,
+  isAdmin: false
 };
 
 const store = createStore({
@@ -16,6 +17,10 @@ const store = createStore({
     // Получаем ID юзера
     getUserId:(state) => {
       return state.userId
+    },
+    // Является ли пользователь администратором
+    getUserIsAdmin:(state) => {
+      return state.isAdmin
     }
   },
   actions: {
@@ -24,6 +29,9 @@ const store = createStore({
     },
     userId(context, userId){
       context.commit("userId", userId);
+    },
+    isAdmin(context, isAdmin) {
+      context.commit("isAdmin", isAdmin)
     }
   },
   mutations: {
@@ -32,6 +40,9 @@ const store = createStore({
     },
     userId(state, userId) {
       state.userId = userId; 
+    },
+    isAdmin(state, isAdmin) {
+      state.isAdmin = isAdmin
     }
   },
 });

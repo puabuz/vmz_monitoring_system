@@ -8,8 +8,16 @@
       Добавить группу
     </button>
   </div>
-  <div class="container">
-    <button @click="sel = null" :class="sel === null ? 'active' : 'btn_tab'">
+  <div v-if="listGroups == 0" class="alert alert-warning p-1" role="alert">
+    Групп для этой огранизации нет
+  </div>
+
+  <div  class="container">
+    <button
+    v-if="listGroups.length"
+      @click="sel = null"
+      :class="sel === null ? 'active' : 'btn_tab'"
+    >
       Все группы
     </button>
 
@@ -35,7 +43,11 @@
       </div>
       <h6 v-if="group.description">{{ group.description }}</h6>
       <!------------------------------ TITLE GROUP ----------------------------------->
-      <div class="alert alert-warning p-1" role="alert" v-if="listDashboards == 0">
+      <div
+        class="alert alert-warning p-1"
+        role="alert"
+        v-if="listDashboards == 0"
+      >
         Графиков для этого устройства нет
       </div>
       <button
@@ -66,19 +78,26 @@
                 data-bs-target="#exampleModal_updateDash"
                 >Редактировать</span
               >
-              <span @click="deleteGraph(dash.Dash_id)" class="chart_menu_dash mx-2">Удалить</span>
+              <span
+                @click="deleteGraph(dash.Dash_id)"
+                class="chart_menu_dash mx-2"
+                >Удалить</span
+              >
             </div>
             <div class="chart__wrapper">
               <!----------- Передаем пропсы(название и ID группы) ------------>
               <!----------------- Передаем данные в графики ------------------>
-              <Chart_Line :label="dash.Dash_name" :Dash_Id="dash.Dash_id" />
+              <Chart_Line
+                :label="dash.Dash_name"
+                :Dash_Id="dash.Dash_id"
+                :Device_name="dash.Device_name"
+              />
             </div>
           </div>
         </template>
       </div>
     </div>
   </div>
-
   <!--------------------------------POPUP ADD GROUP--------------------------------->
   <PopupAdd_Group />
   <!--------------------------------POPUP ADD DASH---------------------------------->
@@ -107,7 +126,7 @@ export default {
     Chart_Line,
   },
   props: {
-    owner_id: {
+    org_id: {
       type: Number,
     },
     device_id: {
@@ -116,27 +135,30 @@ export default {
   },
   data() {
     return {
-      listGroups: null,
+      device_name: null,
+
+      listGroups: [],
       listDashboards: null,
       groupId: null,
       dashId: null,
       sel: null,
     };
   },
-  methods:{
-    deleteGraph(dash){
-      delGraph(dash)
-      this.$router.go(0)
-    }
+  methods: {
+    deleteGraph(dash) {
+      delGraph(dash);
+      this.$router.go(0);
+    },
   },
   watch: {
-    async owner_id(ownerId) {
+    async org_id(org_id) {
       //получаем список групп
       const response = await getGroupsList();
       this.listGroups = response.data;
-      if (ownerId !== 0) {
+
+      if (org_id !== 0) {
         const result = this.listGroups.filter(
-          (group) => group.owner === ownerId
+          (group) => group.owner === org_id
         );
         this.listGroups = result;
       }
@@ -157,20 +179,18 @@ export default {
     //----------------------Получаем список групп
     try {
       const resGroupsList = await getGroupsList();
-    this.listGroups = resGroupsList.data;
+      this.listGroups = resGroupsList.data;
     } catch (err) {
-      alert("Ошибка получения списка групп")
+      alert("Ошибка получения списка групп");
     }
-
 
     // --------------------Получаем список графиков
     try {
       const resDashboardsList = await getDashboardsList();
-    this.listDashboards = resDashboardsList.data;  
+      this.listDashboards = resDashboardsList.data;
     } catch (err) {
-      alert("Ошибка получения списка групп")
+      alert("Ошибка получения списка групп");
     }
-    
   },
 };
 </script>

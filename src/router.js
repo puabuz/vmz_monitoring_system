@@ -7,6 +7,7 @@ import OrganizationsComponent from "./components/OrganizationsComponent.vue";
 import ServicesComponent from "./components/ServicesComponent.vue"
 import ContactsComponent from "./components/ContactsComponent.vue"
 import ArchiveComponent from "./components/ArchiveComponent.vue"
+import AdminComponent from "./components/AdminComponent.vue"
 
 const routerHistory = createWebHashHistory();
 const router = createRouter({
@@ -51,6 +52,11 @@ const router = createRouter({
       path: "/archive",
       name: "archive",
       component: ArchiveComponent,
+    },
+    {
+      path: "/admin",
+      name: "admin",
+      component: AdminComponent,
     },
 
   ],

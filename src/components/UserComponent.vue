@@ -43,7 +43,7 @@
     <div class="row mx-auto dropdown_wrapper">
       <!------------------------ ORGANIZATION DROPDOWN ------------------------>
       <div class="col-12 col-sm-12 col-md-6 mb-3">
-        <Organization_List @getOwnerId="getOwnerId" />
+        <Organization_List @getOrgId="getOrgId" />
       </div>
 
       <!--------------------------- DEVICE DROPDOWN --------------------------->
@@ -55,7 +55,7 @@
   <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%FILTER%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
 
   <!--------------------------------- CHARTS --------------------------------->
-  <ChartsAll :owner_id="owner_id" :device_id="device_id" />
+  <ChartsAll :org_id="org_id" :device_id="device_id" />
 
   <!----------------------------- POPUP ERRORS ------------------------------>
   <PopupErrors />
@@ -79,14 +79,14 @@ export default {
   },
   data() {
     return {
-      owner_id: null,
+      org_id: null,
       device_id: null,
     };
   },
   methods: {
     //принимаем id значение организации из дочернего компонента с помощью emit
-    getOwnerId(ownerId) {
-      this.owner_id = ownerId;
+    getOrgId(org_id) {
+      this.org_id = org_id;
     },
     //принимаем id значение устройства из дочернего компонента с помощью emit
     getDeviceId(devicesId) {

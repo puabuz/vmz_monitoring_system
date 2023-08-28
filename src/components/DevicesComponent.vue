@@ -12,14 +12,35 @@
   </button>
   <hr />
   <div v-for="device in devices" :key="device.id" class="container mb-3">
-    <div v class="d-flex justify-content-between">
+    <div v class="">
       <!-- --------------------DEVICE------------ -->
-      <div class="col-12 col-sm- ava_box">
+      <div class="col-12 ava_box">
         {{ device.u_device_name }}
         <hr />
-        <!-- --------------------BOX_1------------ -->
-        <DeviceComponentMetricsBox :device_id="device.id"/>
+        <!-- ---------------test-------------- -->
+        <button @click="test">get time</button>
+        <!-- ---------------test-------------- -->
+        <select class="select_int">
+          <option value="1h">1 час</option>
+          <option value="2h">2 часа</option>
+          <option value="3h">3 часа</option>
+          <option value="12h">12 часов</option>
+          <option value="24h">24 часов</option>
+          <option value="48h">48 часов</option>
+          <option value="">C начала суток</option>
+        </select>
+        <div class="d-flex justify-content-around">
+          <div class="col-6 m-1">
+            <h6>Общие</h6>
+            <DeviceComponentMetricsBox :device_id="device.id" />
+          </div>
+          <div class="col-6 m-1">
+            <h6>Доп-ые</h6>
+            <DeviceComponentMetricsBox_2 :device_id="device.id" />
+          </div>
+        </div>
       </div>
+      <!-- --------------------BOX_1------------ -->
     </div>
   </div>
   <!--------------------------------POPUP ADD DEVICES--------------------------------->
@@ -30,18 +51,25 @@
 import axios from "axios";
 import PopupAdd_Devices from "./popups/PopupAdd_Devices.vue";
 import DeviceComponentMetricsBox from "./DeviceComponentMetricsBox.vue";
+import DeviceComponentMetricsBox_2 from "./DeviceComponentMetricsBox_2.vue";
 
 export default {
   name: "DeviceComponent",
   components: {
     PopupAdd_Devices,
-    DeviceComponentMetricsBox
+    DeviceComponentMetricsBox,
+    DeviceComponentMetricsBox_2,
   },
   data() {
     return {
       devices: null,
       metrics: null,
     };
+  },
+  methods:{
+    test(){
+      console.log(new Date().getHours())
+    }
   },
   async mounted() {
     // ----------------------------GET ALL DEVICES-------------------------
@@ -91,5 +119,10 @@ button {
     rgba(66, 159, 235, 0.959),
     rgba(65, 133, 221, 0.938)
   );
+}
+.select_int{
+  padding: 0 5px;
+  border-radius: 5px;
+  margin: 0;
 }
 </style>

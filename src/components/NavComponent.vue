@@ -60,12 +60,12 @@
                   >Контакты</router-link
                 >
               </li>
+              <li v-if="isAdmin" class="">
+                <router-link to="/admin" class="nav-link admin_link"
+                  >Админ-панель</router-link
+                >
+              </li>
               <div class="d-flex">
-                <!-- <li @click="logOut">
-                  <a href="#" class="nav-link"
-                    ><span class="logout_btn">Выход</span></a
-                  >
-                </li> -->
                 <!-- ------------------------ -->
                 <div class="btn-group">
                   <button
@@ -109,8 +109,9 @@ export default {
   data() {
     return {
       visibleLeft: false,
-      scrolled: false,
       isShowDropdown: false,
+      isAdmin : false,
+      scrolled: false,
       width: 0,
     };
   },
@@ -126,8 +127,8 @@ export default {
         .then(() => {
           this.$store.dispatch("user", null); // удаляем пользователя из хранилища
           this.$store.dispatch("userId", null); // удаляем ID пользователя из хранилища
+          this.$store.dispatch("isAdmin", false) // Удаляем роль админа
           if (!this.$store.getters.getUser) {
-            this.isShowDropdown = !this.isShowDropdown;
             this.$router.push("/login");
           }
         })
@@ -135,9 +136,7 @@ export default {
           console.log(err);
         });
     },
-    showDropdown() {
-      this.isShowDropdown = !this.isShowDropdown;
-    },
+    
   },
   computed: {
     getUser() {
@@ -150,18 +149,39 @@ export default {
     this.width = window.innerWidth;
 
     axios.defaults.withCredentials = true;
-    await axios
-      .get("user/me")
-      .then((res) => {
-        this.$store.dispatch("user", res.data.username);
-        if (this.$store.getters.getUser) {
-          this.$router.push("/devices");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        this.errorMessage = err.response.data.detail;
-      });
+  
+    try {
+      const res = await axios.get("user/me"); 
+      this.$store.dispatch("user", res.data.username); //
+      if(this.$store.getters.getUser) {
+        if(res.data.is_admin){ //если пользователь является админом, то мы фиксируем это в хранилище
+            this.$store.dispatch("isAdmin", res.data.is_admin)
+            this.isAdmin = this.$store.getters.getUserIsAdmin
+          }
+          // console.log(this.isAdmin)
+          this.$router.push("/");
+      }
+    } catch (error) {
+      console.log(error)
+    }
+
+    // await axios
+    //   .get("user/me")
+    //   .then((res) => {
+    //     this.$store.dispatch("user", res.data.username);
+    //     if (this.$store.getters.getUser) {
+    //       if(res.data.is_admin){ //если пользователь является админом, то мы фиксируем это в хранилище
+    //         this.$store.dispatch("isAdmin", res.data.is_admin)
+    //         this.isAdmin = this.$store.getters.getUserIsAdmin
+    //       }
+    //       console.log(this.isAdmin)
+    //       this.$router.push("/");
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     this.errorMessage = err.response.data.detail;
+    //   });
   },
   unmount() {
     window.removeEventListener("resize", this.updateWidth);
@@ -268,6 +288,9 @@ span {
 }
 .nav_wrapper {
   margin-left: auto;
+}
+.admin_link{
+  color:rgb(209, 174, 108);
 }
 
 </style>
