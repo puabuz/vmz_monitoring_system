@@ -17,27 +17,26 @@
       <div class="col-12 ava_box">
         {{ device.u_device_name }}
         <hr />
-        <!-- ---------------test-------------- -->
-        <button @click="test">get time</button>
-        <!-- ---------------test-------------- -->
-        <select class="select_int">
+
+        <select @change="test2" v-model="selectedValue" class="select_int">
+          <option selected value="С начала суток">С начала суток</option>
           <option value="1h">1 час</option>
           <option value="2h">2 часа</option>
           <option value="3h">3 часа</option>
           <option value="12h">12 часов</option>
           <option value="24h">24 часов</option>
           <option value="48h">48 часов</option>
-          <option value="">C начала суток</option>
+          
         </select>
         <div class="d-flex justify-content-around">
-          <div class="col-6 m-1">
+          <div class="col-12 m-1">
             <h6>Общие</h6>
             <DeviceComponentMetricsBox :device_id="device.id" />
           </div>
-          <div class="col-6 m-1">
+          <!-- <div class="col-6 m-1">
             <h6>Доп-ые</h6>
             <DeviceComponentMetricsBox_2 :device_id="device.id" />
-          </div>
+          </div> -->
         </div>
       </div>
       <!-- --------------------BOX_1------------ -->
@@ -51,17 +50,18 @@
 import axios from "axios";
 import PopupAdd_Devices from "./popups/PopupAdd_Devices.vue";
 import DeviceComponentMetricsBox from "./DeviceComponentMetricsBox.vue";
-import DeviceComponentMetricsBox_2 from "./DeviceComponentMetricsBox_2.vue";
+// import DeviceComponentMetricsBox_2 from "./DeviceComponentMetricsBox_2.vue";
 
 export default {
   name: "DeviceComponent",
   components: {
     PopupAdd_Devices,
     DeviceComponentMetricsBox,
-    DeviceComponentMetricsBox_2,
+    // DeviceComponentMetricsBox_2,
   },
   data() {
     return {
+      selectedValue: '',
       devices: null,
       metrics: null,
     };
@@ -69,12 +69,22 @@ export default {
   methods:{
     test(){
       console.log(new Date().getHours())
+    },
+    test2(){
+      if(this.selectedValue === "С начала суток") console.log(`${String(new Date().getHours())}h`)
+      else console.log(this.selectedValue)
     }
   },
   async mounted() {
+    const hoursLastDay = new Date().getHours() //получаем количество полных часов за текущие сутки
+    this.selectedValue = `${String(hoursLastDay)}h`// добавляем "h" в конце для корректности запроса
+
     // ----------------------------GET ALL DEVICES-------------------------
     const res = await axios.get("devices/all");
     this.devices = res.data;
+
+    // -----------------------------------------------------
+    
   },
 };
 </script>

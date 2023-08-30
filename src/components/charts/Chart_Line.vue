@@ -63,43 +63,6 @@
   <!-- ***Chart-Component*** -->
   <highcharts :constructor-type="'stockChart'" :options="chartOptions" />
   <!-- ***Chart-Component*** -->
-
-  <div
-    @click="showInfo = !showInfo"
-    type="button"
-    class="m-2 px-3 btn btn-info btn-sm button_info"
-    value="i"
-  >
-    i
-  </div>
-  <transition name="fade">
-    <div v-if="showInfo" class="mx-1">
-      <span class="info"
-        >Текущая программа - <span class="marker">Быстрая стирка</span>
-      </span>
-      <span class="info"
-        >Текущий шаг - <span class="marker">Полоскание</span>
-      </span>
-      <span class="info"
-        >Работа текущего цикла(мин) - <span class="marker">34 мин.</span></span
-      >
-      <span class="info"
-        >Текущая температура - <span class="marker"></span>43°</span
-      >
-      <span class="info"
-        >Часов работы за текущие сутки - <span class="marker">18 ч</span></span
-      >
-      <span class="info"
-        >Часов работы за текущую неделю - <span class="marker">86 ч</span></span
-      >
-      <span class="info"
-        >Часов работы за текущий месяц - <span class="marker">386 ч</span></span
-      >
-      <span class="info"
-        >Часов работы за всё время - <span class="marker">1123 ч</span></span
-      >
-    </div>
-  </transition>
 </template>
 
 <script>
@@ -132,7 +95,6 @@ export default {
       dashName: null,
       device: null,
 
-      showInfo: false,
       datetime24h: "",
       selectedValue: null,
 
@@ -284,8 +246,7 @@ export default {
         );
       })
       .catch((err) => {
-        this.errorMessage = err.response.data.detail 
-        console.log(err.response.data.detail);
+        console.log(err);
       });
   },
   created() {
@@ -313,12 +274,10 @@ export default {
 .border_2:hover {
   border: 1px solid rgb(155, 132, 255);
   cursor: pointer;
-  /* background-color: rgb(255, 255, 255); */
 }
 .select_option:hover {
   border: 1px solid rgb(155, 132, 255);
   cursor: pointer;
-  /* background-color: rgb(255, 255, 255); */
 }
 .data_picker {
   border: none;
@@ -332,26 +291,12 @@ select {
 .dash_title {
   color: rgb(100, 100, 100);
 }
-.marker {
-  color: rgb(252, 228, 162);
-}
+
 .button_info {
   color: rgb(255, 255, 255);
   font-size: 16px;
 }
-.info {
-  display: inline-block;
-  font-size: 14px;
-  margin: 0 3px;
-  padding: 0 8px;
-  background-color: rgb(148, 154, 209);
-  border-radius: 9px;
-  cursor: pointer;
-  color: white;
-}
-.info:hover {
-  background-color: rgb(165, 168, 207);
-}
+
 /* ANIMATIONS */
 .fade-enter-active,
 .fade-leave-active {

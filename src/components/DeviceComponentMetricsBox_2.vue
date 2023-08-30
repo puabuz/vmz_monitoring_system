@@ -3,8 +3,13 @@
   <div class="container">
     <div class="row d-flex">
       <div class="col-12 col-sm-12 col-md-12 info_box_1">
-        <div v-if="!noData" class="info">
-          <div class="marker">Текущая температура - 60</div>
+        <div v-if="!noData">
+          <div class="mx-1">
+            <span class="info"
+              >Текущая программа - <span class="marker">Быстрая стирка</span>
+            </span>
+          </div>
+          <div><button class="btn btn-outline-secondary btn-sm">+</button></div>
         </div>
 
         <div v-if="noData" class="info">
@@ -45,7 +50,6 @@ export default {
     try {
       const res = await axios.get(`/queries/last_over_time/${this.device_id}`);
       this.metrics = res.data.metrics;
-      console.log(this.metrics);
 
       if (this.metrics.length == 0) {
         this.noData = true;
@@ -87,19 +91,9 @@ button {
   color: rgb(255, 255, 255);
   padding: 5px;
   border-radius: 10px;
-  background: linear-gradient(
-    to right,
-    rgba(54, 152, 233, 0.959),
-    rgba(53, 121, 211, 0.938)
-  );
+  background: rgb(255, 255, 255);
 }
-.info_box_1:hover {
-  background: linear-gradient(
-    to right,
-    rgba(66, 159, 235, 0.959),
-    rgba(65, 133, 221, 0.938)
-  );
-}
+
 .modal-body {
   color: black;
 }
@@ -108,5 +102,16 @@ button {
 }
 .marker{
   font-size: 14px;
+  color: rgb(252, 228, 162);
+}
+.info {
+  display: inline-block;
+  font-size: 14px;
+  margin: 0 3px;
+  padding: 0 8px;
+  background-color: rgb(148, 154, 209);
+  border-radius: 9px;
+  cursor: pointer;
+  color: white;
 }
 </style>

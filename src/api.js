@@ -6,7 +6,7 @@ import axios from "axios";
 // @param {number} values - значения для графика, 
 // @return [{number}, {number}] - сформированный массив данных
 export const conversionData = (times, values) => {
-  // console.log(times);
+  // console.log(times.length);
   let result = [];
   let getTime = times;
   let getData = values;
@@ -32,7 +32,7 @@ export const getMetricsForDash = async (dash_Id, timeStart, timeEnd) => {
     });
     return conversionData(response.data.timestamps, response.data.values);
   } catch (error) {
-    console.log(error.response.data.detail);
+    console.log(error);
   }
 };
 
@@ -80,6 +80,12 @@ export const userNewsRead = async (newsId) => {
 export const getArchiveNews = async () => {
   const response = await axios.get(`/user/news/archive`);
   return response.data;
+}
+//-->PopapUpdate_Dash
+// Получаем массив параметров
+export const getParametersList = async () => {
+  const response = await axios.get("/user/parameters/get");
+  return response.data
 }
 
 

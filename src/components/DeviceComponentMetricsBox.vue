@@ -3,8 +3,17 @@
   <div class="container">
     <div class="row d-flex">
       <div class="col-12 col-sm-12 col-md-12 info_box_1">
-        <div v-if="!noData" class="info">
-          <div class="marker">Текущая температура - 60</div>
+        <div v-if="!noData">
+          <div class="mx-1">
+            <span v-for="item in resultInterval" :key="item.name" class="info"
+              >{{ item.name }} - <span class="marker">{{ item.value }}</span>
+              <span class="del_button">{{ "\u2715" }}</span>
+            </span>
+          </div>
+          <button class="btn btn-secondary btn-sm">
+              Добавить показатель
+            </button>
+          <!-- <div class="marker">Текущая температура - 60</div> -->
         </div>
 
         <div v-if="noData" class="info">
@@ -28,27 +37,56 @@ export default {
   },
   data() {
     return {
+      params: ["Наработка часы", "Расход воды, л"],
+      resultInterval: [],
       metrics: null,
       noData: false,
       result: null,
       movement: null,
     };
   },
-  methods: {
-    test(event) {
-      console.log(event.target.value);
-    },
-  },
+
   async mounted() {
-    // console.log(this.device_id);
+    //----------------------------------------
     try {
       const res = await axios.get(`/queries/last_over_time/${this.device_id}`);
-      this.metrics = res.data.metrics;
-      console.log(this.metrics);
 
-      if (this.metrics.length == 0) {
+      this.metrics = res.data.metrics;
+      // console.log(this.metrics)
+    } catch (error) {
+      console.log(error);
+    }
+    //----------------------------------------
+    try {
+      const lastByInterval = await axios.post(
+        `/queries/last_by_interval/${this.device_id}`,
+        {
+          interval: "3h",
+        }
+      );
+      const firstByInterval = await axios.post(
+        `/queries/first_by_interval/${this.device_id}`,
+        {
+          interval: "3h",
+        }
+      );
+
+      for (let i = 0; i < this.params.length; i++) {
+        const lastParam = lastByInterval.data.metrics.find(
+          (l) => l.name === this.params[i]
+        );
+        const firstParam = firstByInterval.data.metrics.find(
+          (f) => f.name === this.params[i]
+        );
+        let value = lastParam.value - firstParam.value;
+        if (value) {
+          this.resultInterval.push({ name: this.params[i], value: +value });
+        }
+      }
+      if (this.resultInterval.length == 0) { // если данные отсутствуют...
         this.noData = true;
       }
+      // console.log(this.resultInterval);
     } catch (error) {
       console.log(error);
     }
@@ -83,22 +121,15 @@ button {
   );
 }
 .info_box_1 {
-  color: rgb(255, 255, 255);
   padding: 5px;
   border-radius: 10px;
   background: linear-gradient(
     to right,
-    rgba(54, 152, 233, 0.959),
-    rgba(53, 121, 211, 0.938)
+    rgba(255, 255, 255, 0.959),
+    rgba(255, 255, 255, 0.938)
   );
 }
-.info_box_1:hover {
-  background: linear-gradient(
-    to right,
-    rgba(66, 159, 235, 0.959),
-    rgba(65, 133, 221, 0.938)
-  );
-}
+
 .modal-body {
   color: black;
 }
@@ -107,5 +138,30 @@ button {
 }
 .marker {
   font-size: 14px;
+  color: rgb(252, 228, 162);
+  padding-right: 7px;
+}
+.info {
+  display: inline-block;
+  font-size: 14px;
+  margin-left: 3px;
+  padding-left: 8px;
+  background-color: rgb(148, 154, 209);
+  border-radius: 9px;
+  cursor: pointer;
+  color: white;
+}
+
+.del_button {
+  border-radius: 10px;
+  margin-right: 3px;
+  margin-left: 5px;
+  padding: 0 3px;
+  background-color: rgb(87, 88, 88);
+  font-size: 12px;
+  align-items: center;
+}
+.del_button:hover {
+  background-color: rgb(11, 127, 156);
 }
 </style>

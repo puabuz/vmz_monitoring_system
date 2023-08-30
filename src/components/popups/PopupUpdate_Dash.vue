@@ -59,15 +59,13 @@
                   required
                 >
                   <option selected>Выберите параметр</option>
-                  <option value="Текущая скорость">Текущая скорость</option>
-                  <option value="Температура нагрева">
-                    Температура нагрева
+                  <option
+                    v-for="param in parametersList"
+                    :key="param.name"
+                    :value="param.name"
+                  >
+                    {{ param.name }}
                   </option>
-                  <option value="Текущая температура">
-                    Текущая температура
-                  </option>
-                  <option value="Уровень воды">Уровень воды</option>
-                  <option value="Кол-во воды">Кол-во воды</option>
                 </select>
               </div>
             </div>
@@ -124,6 +122,7 @@
 
 <script>
 import axios from "axios";
+import { getParametersList } from "../../api";
 
 export default {
   name: "PopupUpdate_Dash",
@@ -144,14 +143,14 @@ export default {
       group_id: null,
       parName: null,
       interval: 10,
+      parametersList: null,
     };
   },
 
   methods: {
-    
     setGroupId(event) {
       console.log(event.target.value);
-      this.group_id = event.target.value
+      this.group_id = event.target.value;
     },
 
     setParams(event) {
@@ -159,29 +158,35 @@ export default {
       this.parName = event.target.value;
     },
 
-    setInterval(event){
-      console.log(event.target.value);
-      this.interval = event.target.value
+    setInterval(event) {
+      this.interval = +event.target.value;
+      console.log(this.interval);
     },
 
     //------------------------------ДОБАВЛЕНИЕ НОВОГО ГРАФИКА
     async updateDash() {
-      
-      await axios
-      .put(`/dashboard/graphs/${this.dashId}`, {
-
+      try {
+        await axios.put(`/dashboard/graphs/${this.dashId}`, {
           group_id: this.group_id,
           Par_name: this.parName,
           interval: this.interval,
-        })
-        .then(() => {
-          this.$router.go(0);
-        })
-        .catch((err) => {
-          alert(err.response.data.detail);
-          console.log(err);
         });
+        this.$router.go(0);
+      } catch (error) {
+        alert(error);
+        console.log(error);
+      }
     },
+  },
+  async mounted() {
+    try {
+      const response = await getParametersList();
+      this.parametersList = response.filter((p) => p.graph_visible)
+      // console.log(this.parametersList);
+    } catch (error) {
+      alert(error)
+      console.log(error);
+    }
   },
 };
 </script>
