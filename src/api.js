@@ -82,7 +82,7 @@ export const getArchiveNews = async () => {
   return response.data;
 }
 //-->PopapUpdate_Dash
-// Получаем массив параметров
+// Получаем массив параметров для добавления и редактирования графиков
 export const getParametersList = async () => {
   const response = await axios.get("/user/parameters/get");
   return response.data

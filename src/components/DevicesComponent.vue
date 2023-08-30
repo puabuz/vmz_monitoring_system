@@ -12,35 +12,41 @@
   </button>
   <hr />
   <div v-for="device in devices" :key="device.id" class="container mb-3">
-    <div v class="">
-      <!-- --------------------DEVICE------------ -->
-      <div class="col-12 ava_box">
-        {{ device.u_device_name }}
-        <hr />
+    <!-- --------------------DEVICE------------ -->
+    <div class="col-12 ava_box">
+      {{ device.u_device_name }}
+      <hr />
 
-        <select @change="test2" v-model="selectedValue" class="select_int">
-          <option selected value="С начала суток">С начала суток</option>
-          <option value="1h">1 час</option>
-          <option value="2h">2 часа</option>
-          <option value="3h">3 часа</option>
-          <option value="12h">12 часов</option>
-          <option value="24h">24 часов</option>
-          <option value="48h">48 часов</option>
-          
-        </select>
-        <div class="d-flex justify-content-around">
-          <div class="col-12 m-1">
-            <h6>Общие</h6>
-            <DeviceComponentMetricsBox :device_id="device.id" />
+      <div class="d-flex justify-content-around">
+        <div class="col-6 m-1">
+          <div>
+            <span class="title_drop">За период</span>
+            <span class="title_drop">
+              <select
+                @change="test2"
+                v-model="selectedValue"
+                class="select_int"
+              >
+                <option selected value="С начала суток">С начала суток</option>
+                <option value="1h">1 час</option>
+                <option value="2h">2 часа</option>
+                <option value="3h">3 часа</option>
+                <option value="12h">12 часов</option>
+                <option value="24h">24 часов</option>
+                <option value="48h">48 часов</option>
+              </select>
+            </span>
           </div>
-          <!-- <div class="col-6 m-1">
-            <h6>Доп-ые</h6>
-            <DeviceComponentMetricsBox_2 :device_id="device.id" />
-          </div> -->
+          <DeviceComponentMetricsBox_2 :device_id="device.id" />
+        </div>
+        <div class="col-6 m-1">
+          <span class="title_drop">Текущие</span>
+          
+          <DeviceComponentMetricsBox :device_id="device.id" />
         </div>
       </div>
-      <!-- --------------------BOX_1------------ -->
     </div>
+    <!-- --------------------BOX_1------------ -->
   </div>
   <!--------------------------------POPUP ADD DEVICES--------------------------------->
   <PopupAdd_Devices />
@@ -50,47 +56,49 @@
 import axios from "axios";
 import PopupAdd_Devices from "./popups/PopupAdd_Devices.vue";
 import DeviceComponentMetricsBox from "./DeviceComponentMetricsBox.vue";
-// import DeviceComponentMetricsBox_2 from "./DeviceComponentMetricsBox_2.vue";
+import DeviceComponentMetricsBox_2 from "./DeviceComponentMetricsBox_2.vue";
 
 export default {
   name: "DeviceComponent",
   components: {
     PopupAdd_Devices,
     DeviceComponentMetricsBox,
-    // DeviceComponentMetricsBox_2,
+    DeviceComponentMetricsBox_2,
   },
   data() {
     return {
-      selectedValue: '',
+      selectedValue: "",
       devices: null,
       metrics: null,
     };
   },
-  methods:{
-    test(){
-      console.log(new Date().getHours())
+  methods: {
+    test2() {
+      if (this.selectedValue === "С начала суток")
+        console.log(`${String(new Date().getHours())}h`);
+      else console.log(this.selectedValue);
     },
-    test2(){
-      if(this.selectedValue === "С начала суток") console.log(`${String(new Date().getHours())}h`)
-      else console.log(this.selectedValue)
-    }
   },
   async mounted() {
-    const hoursLastDay = new Date().getHours() //получаем количество полных часов за текущие сутки
-    this.selectedValue = `${String(hoursLastDay)}h`// добавляем "h" в конце для корректности запроса
+    const hoursLastDay = new Date().getHours(); //получаем количество полных часов за текущие сутки
+    this.selectedValue = `${String(hoursLastDay)}h`; // добавляем "h" в конце для корректности запроса
 
+    
+  
     // ----------------------------GET ALL DEVICES-------------------------
     const res = await axios.get("devices/all");
     this.devices = res.data;
 
     // -----------------------------------------------------
-    
   },
 };
 </script>
 <style scoped>
 .title {
   color: rgb(255, 255, 255);
+}
+.title_drop {
+  margin-right: 10px;
 }
 button {
   margin: 10px 12px;
@@ -130,7 +138,7 @@ button {
     rgba(65, 133, 221, 0.938)
   );
 }
-.select_int{
+.select_int {
   padding: 0 5px;
   border-radius: 5px;
   margin: 0;

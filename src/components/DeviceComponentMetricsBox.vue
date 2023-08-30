@@ -1,6 +1,7 @@
 <template>
+  <!-- ТЕКУЩИЕ ПОКАЗАТЕЛИ -->
   <!-- --------------------BOX_1------------ -->
-  <div class="container">
+  <div class="container mt-1">
     <div class="row d-flex">
       <div class="col-12 col-sm-12 col-md-12 info_box_1">
         <div v-if="!noData">
@@ -37,22 +38,22 @@ export default {
   },
   data() {
     return {
-      params: ["Наработка часы", "Расход воды, л"],
       resultInterval: [],
-      metrics: null,
       noData: false,
+      params: ["Наработка часы", "Расход воды, л"],
+      metrics: null,
       result: null,
       movement: null,
     };
   },
 
   async mounted() {
-    //----------------------------------------
+    //-------------------Получаем---------------------
     try {
       const res = await axios.get(`/queries/last_over_time/${this.device_id}`);
 
       this.metrics = res.data.metrics;
-      // console.log(this.metrics)
+      console.log(this.metrics)
     } catch (error) {
       console.log(error);
     }

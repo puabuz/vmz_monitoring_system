@@ -1,6 +1,7 @@
 <template>
+  <!-- ПОКАЗАТЕЛИ ЗА ПЕРИОД -->
   <!-- --------------------BOX_1------------ -->
-  <div class="container">
+  <div class="container mt-1">
     <div class="row d-flex">
       <div class="col-12 col-sm-12 col-md-12 info_box_1">
         <div v-if="!noData">
@@ -9,7 +10,9 @@
               >Текущая программа - <span class="marker">Быстрая стирка</span>
             </span>
           </div>
-          <div><button class="btn btn-outline-secondary btn-sm">+</button></div>
+          <button class="btn btn-secondary btn-sm">
+              Добавить показатель
+            </button>
         </div>
 
         <div v-if="noData" class="info">
