@@ -83,9 +83,70 @@ export const getArchiveNews = async () => {
 }
 //-->PopapUpdate_Dash
 // Получаем массив параметров для добавления и редактирования графиков
+//return Array []
 export const getParametersList = async () => {
   const response = await axios.get("/user/parameters/get");
   return response.data
 }
+
+//-->DeviceComponentMetricsBox
+//-->DeviceComponentMetricsBox_2
+//получаем параметры пользователя
+//return Array []
+export const getUserParams = async () => {
+  const userParametersAll = await axios.get(`/user/parameters/get`); //получаем параметры пользователя
+  //сравниваем по math_visible
+  const paramsFiltered = userParametersAll.data.filter(
+    (p) => p.math_visible
+  );
+  const result = paramsFiltered.map((el) => {
+    if (el.name) return el.name;
+  });
+  return result
+}
+
+//-->DeviceComponentMetricsBox
+//-->DeviceComponentMetricsBox_2
+//получаем все текущие метрики пользователя
+// param - deviceId
+//return [{}, {}, ... {}]
+export const getCurrentMetrics = async (deviceId) => {
+  const result = await axios.get(
+    `/queries/last_over_time/${deviceId}`);
+    return result
+}
+
+//-->DeviceComponentMetricsBox
+//-->DeviceComponentMetricsBox_2
+// получаем данные начала интервала
+
+export const getMetricsStepStart = async(deviceId, step) => {
+  const result = await axios.post(
+    `/queries/first_by_interval/${deviceId}`,
+    {
+      interval: step,
+    }
+  );
+  return result;
+}
+
+// export const calcMetricsInterval =  (params, lastByInterval, firstByInterval) =>{
+//   const result = []
+//     for (let i = 0; i < params.length; i++) {
+//       const lastParam = lastByInterval.data.metrics.find(
+//         (l) => l.name === this.params[i]
+//       );
+
+//       const firstParam = firstByInterval.data.metrics.find(
+//         (f) => f.name === this.params[i]
+//       );
+
+//       let value = lastParam?.value - firstParam?.value;
+//       if (value) {
+//         result.push({ name: this.params[i], value });
+//       }
+//     }
+//     return result
+// }
 
 

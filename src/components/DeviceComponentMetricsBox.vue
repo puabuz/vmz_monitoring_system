@@ -4,9 +4,9 @@
   <div class="container mt-1">
     <div class="row d-flex">
       <div class="col-12 col-sm-12 col-md-12 info_box_1">
-        <div v-if="!noData">
+        <div>
           <div class="mx-1">
-            <span v-for="item in resultInterval" :key="item.name" class="info"
+            <span v-for="item in resultListMetrics" :key="item.name" class="info"
               >{{ item.name }} - <span class="marker">{{ item.value }}</span>
               <span class="del_button">{{ "\u2715" }}</span>
             </span>
@@ -15,10 +15,6 @@
               Добавить показатель
             </button>
           <!-- <div class="marker">Текущая температура - 60</div> -->
-        </div>
-
-        <div v-if="noData" class="info">
-          <span class="marker">Данные отсутствуют</span>
         </div>
       </div>
     </div>
@@ -38,9 +34,9 @@ export default {
   },
   data() {
     return {
-      resultInterval: [],
-      noData: false,
-      params: ["Наработка часы", "Расход воды, л"],
+      resultListMetrics: [],
+      noData: true,
+      params: null,
       metrics: null,
       result: null,
       movement: null,
@@ -48,46 +44,20 @@ export default {
   },
 
   async mounted() {
-    //-------------------Получаем---------------------
     try {
-      const res = await axios.get(`/queries/last_over_time/${this.device_id}`);
+      //получаем все текущие параметры
+      const lastByInterval = await axios.get(`/queries/last_over_time/${this.device_id}`);
+      const userParametersAll = await axios.get(`/user/parameters/get`); //получаем параметры пользователя
+      const paramsFiltered = userParametersAll.data.filter(p => p.math_visible); //сравниваем по math_visible
+      this.params = paramsFiltered.map(el => {
+        if(el.name) return el.name;
+      })
+      // console.log(this.params) // "Наработка часы" "Счётчик запусков программ" "Мощность, кВт*ч" "Расход воды всего"
 
-      this.metrics = res.data.metrics;
-      console.log(this.metrics)
-    } catch (error) {
-      console.log(error);
-    }
-    //----------------------------------------
-    try {
-      const lastByInterval = await axios.post(
-        `/queries/last_by_interval/${this.device_id}`,
-        {
-          interval: "3h",
-        }
-      );
-      const firstByInterval = await axios.post(
-        `/queries/first_by_interval/${this.device_id}`,
-        {
-          interval: "3h",
-        }
-      );
-
-      for (let i = 0; i < this.params.length; i++) {
-        const lastParam = lastByInterval.data.metrics.find(
-          (l) => l.name === this.params[i]
-        );
-        const firstParam = firstByInterval.data.metrics.find(
-          (f) => f.name === this.params[i]
-        );
-        let value = lastParam.value - firstParam.value;
-        if (value) {
-          this.resultInterval.push({ name: this.params[i], value: +value });
-        }
+      for(let i = 0; i < this.params.length; i++){
+        const result = lastByInterval.data.metrics.find(el => el.name ===this.params[i])
+        if(result){this.resultListMetrics.push(result)}
       }
-      if (this.resultInterval.length == 0) { // если данные отсутствуют...
-        this.noData = true;
-      }
-      // console.log(this.resultInterval);
     } catch (error) {
       console.log(error);
     }
