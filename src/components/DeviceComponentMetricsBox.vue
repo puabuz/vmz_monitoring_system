@@ -4,17 +4,31 @@
   <div class="container mt-1">
     <div class="row d-flex">
       <div class="col-12 col-sm-12 col-md-12 info_box_1">
-        <div>
+        <div v-if="resultListMetrics.length !== 0">
           <div class="mx-1">
-            <span v-for="item in resultListMetrics" :key="item.name" class="info"
+            <span
+              v-for="item in resultListMetrics"
+              :key="item.name"
+              class="info"
               >{{ item.name }} - <span class="marker">{{ item.value }}</span>
               <span class="del_button">{{ "\u2715" }}</span>
             </span>
+
+            <span class="info"
+              >Текущий шаг - <span class="marker">{{ currentStep }}</span>
+              <span class="del_button">{{ "\u2715" }}</span>
+            </span>
+
+            <span class="info"
+              >Последняя активность -
+              <span class="marker">{{ lastActivity }}</span>
+              <span class="del_button">{{ "\u2715" }}</span>
+            </span>
           </div>
-          <button class="btn btn-secondary btn-sm">
-              Добавить показатель
-            </button>
-          <!-- <div class="marker">Текущая температура - 60</div> -->
+          <button class="btn btn-secondary btn-sm">Добавить показатель</button>
+        </div>
+        <div class="no_data" v-if="resultListMetrics.length === 0">
+          Текущие данные отсутствуют
         </div>
       </div>
     </div>
@@ -40,23 +54,55 @@ export default {
       metrics: null,
       result: null,
       movement: null,
+      currentStep: null,
+      lastActivity: null,
     };
   },
 
   async mounted() {
     try {
+      const response = await axios.get(`/devices/id/${this.device_id}`);
+      console.log(response.data[0]);
+      console.log(response.data[0].last_activity);
+      //2023-09-01T16:22:32.749247
+      this.currentStep = response.data[0].step_name;
+
+      this.lastActivity = new Date(
+        response.data[0].last_activity
+      ).toLocaleDateString("ru-US", {
+        hour: "numeric",
+        minute: "numeric",
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+      });
+      console.log(this.currentStep);
+      console.log(this.lastActivity);
+    } catch (error) {
+      console.log(error);
+      alert(error);
+    }
+    try {
       //получаем все текущие параметры
-      const lastByInterval = await axios.get(`/queries/last_over_time/${this.device_id}`);
+      const lastByInterval = await axios.get(
+        `/queries/last_over_time/${this.device_id}`
+      );
       const userParametersAll = await axios.get(`/user/parameters/get`); //получаем параметры пользователя
-      const paramsFiltered = userParametersAll.data.filter(p => p.math_visible); //сравниваем по math_visible
-      this.params = paramsFiltered.map(el => {
-        if(el.name) return el.name;
-      })
+      const paramsFiltered = userParametersAll.data.filter(
+        (p) => p.math_visible
+      ); //сравниваем по math_visible
+      this.params = paramsFiltered.map((el) => {
+        if (el.name) return el.name;
+      });
       // console.log(this.params) // "Наработка часы" "Счётчик запусков программ" "Мощность, кВт*ч" "Расход воды всего"
 
-      for(let i = 0; i < this.params.length; i++){
-        const result = lastByInterval.data.metrics.find(el => el.name ===this.params[i])
-        if(result){this.resultListMetrics.push(result)}
+      for (let i = 0; i < this.params.length; i++) {
+        const result = lastByInterval.data.metrics.find(
+          (el) => el.name === this.params[i]
+        );
+        if (result) {
+          this.resultListMetrics.push(result);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -134,5 +180,8 @@ button {
 }
 .del_button:hover {
   background-color: rgb(11, 127, 156);
+}
+.no_data {
+  color: rgb(211, 117, 11);
 }
 </style>

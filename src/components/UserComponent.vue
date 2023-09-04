@@ -1,5 +1,5 @@
 <template>
-  <div class="container mb-2 mt-3">
+  <div class="container mb-2 mt-3 ">
     <div class="title">Главная</div>
   </div>
   <hr />

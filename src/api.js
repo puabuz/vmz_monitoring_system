@@ -130,23 +130,16 @@ export const getMetricsStepStart = async(deviceId, step) => {
   return result;
 }
 
-// export const calcMetricsInterval =  (params, lastByInterval, firstByInterval) =>{
-//   const result = []
-//     for (let i = 0; i < params.length; i++) {
-//       const lastParam = lastByInterval.data.metrics.find(
-//         (l) => l.name === this.params[i]
-//       );
+//--> PopapAdminAdd_News
+//param "string"
+//return 200 "Ok"
+export const addNewNews = async (text) =>{
+  const response = axios.post("/adm/news/add", { text });
+  return response
+}
 
-//       const firstParam = firstByInterval.data.metrics.find(
-//         (f) => f.name === this.params[i]
-//       );
-
-//       let value = lastParam?.value - firstParam?.value;
-//       if (value) {
-//         result.push({ name: this.params[i], value });
-//       }
-//     }
-//     return result
-// }
+//--> AdminParameters_Component
+//param "string"
+//return 200 "Ok"
 
 

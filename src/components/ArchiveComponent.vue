@@ -10,12 +10,6 @@
       <span class="date">{{ new Date(item.added_at).toLocaleDateString("ru-US", { day: 'numeric', month: 'numeric', year: 'numeric' }) }}</span>
       <div>{{ item.text }}</div>
       <div class="d-flex justify-content-end">
-        <button
-          @click="sendToArchive(item.id)"
-          class="button_ok btn btn-outline-success btn-sm m-1"
-        >
-          Кнопка
-        </button>
       </div>
     </div>
   </template>

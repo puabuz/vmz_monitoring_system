@@ -7,7 +7,7 @@ import OrganizationsComponent from "./components/OrganizationsComponent.vue";
 import ServicesComponent from "./components/ServicesComponent.vue"
 import ContactsComponent from "./components/ContactsComponent.vue"
 import ArchiveComponent from "./components/ArchiveComponent.vue"
-import AdminComponent from "./components/AdminComponent.vue"
+import AdminComponent from "./components/AdminComponents/AdminComponent.vue"
 
 const routerHistory = createWebHashHistory();
 const router = createRouter({

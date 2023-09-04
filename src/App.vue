@@ -1,8 +1,7 @@
 <template>
-  <div id="app" class="d-flex flex-column min-vh-100">
+  <div id="app" class="d-flex flex-column min-vh-100 ">
     <div class="nav_wrapper"><NavComponent /></div>
-
-    <div class="container auth_wrapper">
+    <div class="container auth_wrapper ">
       <router-view />
       <div class="res_block">{{ errorMessage }}</div>
     </div>
