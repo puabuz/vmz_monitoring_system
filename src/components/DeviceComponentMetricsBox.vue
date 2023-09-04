@@ -1,16 +1,25 @@
 <template>
   <!-- ТЕКУЩИЕ ПОКАЗАТЕЛИ -->
   <!-- --------------------BOX_1------------ -->
+  
+  <!-- <span v-if="!deviceIsInactive" class="device_inactiv">Устройство активно <span class="green_circle"></span></span> -->
+  <span v-if="!deviceIsInactive" class="green_circle"></span>
+  
+  <span v-if="deviceIsInactive" class="red_circle"></span>
+  <!-- <span v-if="deviceIsInactive" class="device_inactiv mx-1">Устройство неактивно</span> -->
+  
   <div class="container mt-1">
     <div class="row d-flex">
       <div class="col-12 col-sm-12 col-md-12 info_box_1">
+        
         <div v-if="resultListMetrics.length !== 0">
           <div class="mx-1">
             <span
               v-for="item in resultListMetrics"
               :key="item.name"
               class="info"
-              >{{ item.name }} - <span class="marker">{{ item.value }}</span>
+              >
+              {{ item.name }} - <span class="marker">{{ item.value }}</span>
               <span class="del_button">{{ "\u2715" }}</span>
             </span>
 
@@ -56,16 +65,30 @@ export default {
       movement: null,
       currentStep: null,
       lastActivity: null,
+      deviceIsInactive: false,
     };
   },
 
   async mounted() {
+
     try {
       const response = await axios.get(`/devices/id/${this.device_id}`);
-      console.log(response.data[0]);
-      console.log(response.data[0].last_activity);
-      //2023-09-01T16:22:32.749247
+      console.log(response.data[0])
       this.currentStep = response.data[0].step_name;
+      const lastActvt = new Date(response.data[0].last_activity).getTime() //Время последней активности устройства
+      const currentData = Date.now() // текущее время
+      // console.log("----------------")
+      // console.log("Последняя активность " + lastActvt)
+      // console.log("Текущее время" + currentData)
+      // console.log("----------------")
+      const totalDowntime = currentData - lastActvt // Вычисляем время простоя машины в UNIX (милисекунды)
+      console.log("Разница" + Math.floor(totalDowntime / 1000)) // выводим значение в секундах в секунды
+      const totalDowntimeSeconds = Math.floor(totalDowntime / 1000)// перенводим в секунды
+      if(totalDowntimeSeconds > 180){
+        this.deviceIsInactive = true
+      } else{
+        this.deviceIsInactive = false;
+      }
 
       this.lastActivity = new Date(
         response.data[0].last_activity
@@ -76,12 +99,11 @@ export default {
         month: "numeric",
         year: "numeric",
       });
-      console.log(this.currentStep);
-      console.log(this.lastActivity);
     } catch (error) {
       console.log(error);
       alert(error);
     }
+
     try {
       //получаем все текущие параметры
       const lastByInterval = await axios.get(
@@ -146,7 +168,10 @@ button {
     rgba(255, 255, 255, 0.938)
   );
 }
-
+.device_inactiv{
+  color:rgb(255, 254, 253);
+  display: inline-block;
+}
 .modal-body {
   color: black;
 }
@@ -168,7 +193,22 @@ button {
   cursor: pointer;
   color: white;
 }
-
+.green_circle{
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+  border-radius: 5px;
+  background-color: rgb(131, 255, 30);
+  margin: 5px 3px 0 3px;
+}
+.red_circle{
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+  border-radius: 5px;
+  background-color: rgb(228, 93, 93);
+  margin: 5px 3px 0 3px;
+}
 .del_button {
   border-radius: 10px;
   margin-right: 3px;
